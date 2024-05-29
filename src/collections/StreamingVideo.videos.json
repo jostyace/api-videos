@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "6654f17b5a7ebc3486e3213f"
+  },
+  "titulo": "Joseph_Programacion",
+  "descripcion": "Aprendiendo NodeJS",
+  "etiqueta": "Estudio",
+  "fechaSubida": "2024-05-27",
+  "miniatura": "imagenVideo",
+  "reproducciones": 1
+}]
