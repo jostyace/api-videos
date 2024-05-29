@@ -1,5 +1,5 @@
 import { eliminarArchivo } from './filemanagement.js';
-import { Usuario } from '../models/usuario.js';
+import usuarios from '../models/model.Usuario.js';
 import mongoose from 'mongoose';
 
 export async function validarId(id) {
@@ -9,8 +9,8 @@ export async function validarId(id) {
   }
 
   export async function validarCampos(username, email, password, rol, action) {
-    const emailDuplicated = await Usuario.find({ email });
-    const usernameDuplicated = await Usuario.find({ username });
+    const emailDuplicated = await usuarios.find({ email });
+    const usernameDuplicated = await usuarios.find({ username });
 
     if (action === 'create') {
       if (!username || !email || !password || !rol) {

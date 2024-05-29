@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { validarCampos, validarId } from '../utils/validation.js';
-import { Usuario } from '../models/usuario.js';
+import usuarios from '../models/model.Usuario.js';
 import { reemplazarFoto } from '../utils/filemanagement.js';
 
 export const registrarUsuario = async (req, res) => {
@@ -10,7 +10,7 @@ export const registrarUsuario = async (req, res) => {
     await validarCampos(name, email, password, rol, [], 'create');
     const saltRounds = 10;
     const hashPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new Usuario({ name, email, password: hashPassword, rol, video_history });
+    const newUser = new usuarios({ name, email, password: hashPassword, rol, video_history });
     await newUser.save();
     res.json({ message: 'Usuario creado correctamente', newUser });
   } catch (error) {
@@ -25,7 +25,7 @@ export const actualizarUsuario = async (req, res) => {
   try {
     await validarId(id);
     await validarCampos(name, email, picture, password, bio, phone, 'update');
-    const usuario = await Usuario.findById(id);
+    const usuario = await usuarios.findById(id);
     if (!usuario) {
       return res.status(400).json({ message: 'No existe un usuario con el ID proporcionado' });
     }
@@ -56,8 +56,8 @@ export const informacionUsuario = async (req, res) => {
 
 export const listadoUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.find({}, 'id name email bio phone picture');
-    res.json({ usuarios });
+    const listausuarios = await usuarios.find({}, 'id username email bio phone picture');
+    res.json({ listausuarios });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

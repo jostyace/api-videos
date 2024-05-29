@@ -1,7 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { Usuario } from '../models/usuario.js'; // Asegúrate de importar tu modelo de usuario
-
+import usuarios from '../models/model.Usuario.js'; 
 export const basePath = process.cwd();
 
 export function eliminarArchivo(nombre) {
@@ -16,7 +15,7 @@ export function eliminarArchivo(nombre) {
 
 export async function reemplazarFoto(picture, id) {
   try {
-    const usuario = await Usuario.findById(id).select('picture');
+    const usuario = await usuarios.findById(id).select('picture');
     if (usuario && picture !== usuario.picture) {
       eliminarArchivo(usuario.picture);
     }
