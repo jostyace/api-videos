@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken'
-import { jwtSecret } from '../config/config.js'
+import { JWT_SECRET } from '../config/config'
 
-const logueadoMiddleware = (req, res, next) => {
+
+export const logueadoMiddleware = (req, res, next) => {
   const authHeader = req.header('Authorization')
   if (!authHeader) {
     return res.status(401).json({ message: 'No está autenticado' })
@@ -13,12 +14,10 @@ const logueadoMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, jwtSecret)
+    const decoded = jwt.verify(token, JWT_SECRET)
     req.user = decoded
     next()
   } catch (err) {
     res.status(401).json({ message: 'Token no es válido' })
   }
 }
-
-export default authMiddleware

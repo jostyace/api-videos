@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import usuariosRoutes from './src/routes/usuariosRoutes.js'
 import { connectDB } from './src/config/db.js'
+import { FRONT_URL } from './src/config/config.js'
 import user from './src/route.js'
 
 const app = express()
@@ -9,8 +10,8 @@ const PORT = 3000
 
 connectDB()
 app.use(express.static('public'))
-app.use(cors({
-  origin: 'http://localhost:5173',
+app.use(cors({ 
+  origin: FRONT_URL,
   methods: ['GET', 'POST', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))

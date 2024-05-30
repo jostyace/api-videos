@@ -7,16 +7,18 @@ import {
   informacionUsuario,
   listadoUsuarios,
   videosUsuario,
-  historialUsuario
+  historialUsuario,
+  eliminarUsuario,
+  iniciarSesion
 } from '../controllers/usersController.js'
 
-
 const router = express.Router()
-router.post('/usuarios/registro', subirArchivos.single('picture'), registrarUsuario)
-router.get('/usuarios/:id',  informacionUsuario)
-router.get('/usuarios', listadoUsuarios)
-router.patch('/usuarios/:id', subirArchivos.single('picture'), actualizarUsuario)
-router.delete('/usuarios/:id', actualizarUsuario)
+router.post('/usuarios/registro', subirArchivos.single('imagenPerfil'), registrarUsuario) //ok
+router.get('/usuarios/:id',  informacionUsuario) //ok
+router.get('/usuarios', listadoUsuarios) //ok
+router.patch('/usuarios/:id', subirArchivos.single('imagenPerfil'), actualizarUsuario) //ok
+router.delete('/usuarios/:id', eliminarUsuario) //ok
+router.post('/usuarios/login', iniciarSesion)
 router.get('/usuarios/videos/:id', videosUsuario)
 router.get('/usuarios/reproducciones/:id', historialUsuario)
 

@@ -15,9 +15,11 @@ export function eliminarArchivo(nombre) {
 
 export async function reemplazarFoto(picture, id) {
   try {
-    const usuario = await usuarios.findById(id).select('picture');
-    if (usuario && picture !== usuario.picture) {
-      eliminarArchivo(usuario.picture);
+    const usuario = await usuarios.findById(id).select('imagenPerfil');
+    console.log(usuario)
+    console.log(picture)
+    if (usuario && usuario.imagenPerfil !== picture) {
+      eliminarArchivo(usuario.imagenPerfil);
     }
   } catch (error) {
     console.error('Error al reemplazar la foto:', error.message);
