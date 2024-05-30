@@ -1,6 +1,6 @@
-import { eliminarArchivo } from './filemanagement.js';
-import usuarios from '../models/model.Usuario.js';
-import mongoose from 'mongoose';
+import { eliminarArchivo } from './filemanagement.js'
+import usuarios from '../models/model.Usuario.js'
+import mongoose from 'mongoose'
 
 export async function validarId(id) {
   if (id.trim() === '') { throw new Error('ID es inválido'); }
@@ -39,11 +39,13 @@ export async function validarId(id) {
         if (imagenPerfil) eliminarArchivo(imagenPerfil);
         throw new Error('El nombre debe tener como máximo 50 caracteres');
       }
+
     }
   
   }
-  
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+}
+
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}

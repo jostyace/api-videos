@@ -1,20 +1,19 @@
 import express from 'express'
-
 import { subirArchivos } from '../config/multer.js'
-import {
-  actualizarUsuario,
-  informacionUsuario
-} from '../controllers/usersController.js'
 import { logueadoMiddleware } from '../middleware/logueadoMiddleware.js'
+import { actualizarVideo, categoriaVideo, eliminarVideo, estadisticaCategoria, estadisticaReproduccion, informacionVideo, listadoVideos, registrarVideo } from '../controllers/videosController.js'
 
 
 const router = express.Router()
-router.post('/usuarios/registro', logueadoMiddleware, subirArchivos.single('picture'), registrarUsuario)
-router.get('/usuarios/:id', logueadoMiddleware, informacionUsuario)
-router.get('/usuarios', logueadoMiddleware, esAdmin, listadoUsuario)
-router.patch('/usuarios/:id', logueadoMiddleware, subirArchivos.single('picture'), actualizarUsuario)
-router.delete('/usuarios/:id', logueadoMiddleware, actualizarUsuario)
-router.get('/usuarios/videos/:id', logueadoMiddleware, videosUsuario)
-router.get('/usuarios/reproducciones/:id', logueadoMiddleware, historialUsuario)
+// logueadoMiddleware, subirArchivos.single('NuevoVideo')
+router.post('/videos/registro', registrarVideo)
+router.patch('/videos/actualizar/:id', actualizarVideo)
+router.delete('/videos/delete/:id', eliminarVideo)
+// logueadoMiddleware, esAdmin,
+router.get('/videos', listadoVideos)
+router.get('/videos/:id', informacionVideo)
+router.get('/videos/etiqueta/:etiqueta', categoriaVideo)
+router.get('/videos/estadísticas/reproducciones/:id ', estadisticaReproduccion)
+router.get('/videos/estadísticas/etiquetas/:nombre_etiqueta ', estadisticaCategoria)
 
 export default router
