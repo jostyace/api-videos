@@ -1,9 +1,13 @@
+import Usuarios from '../models/model.Usuario.js';
 import videoModel from '../models/model.Videos.js'
 
 export const registrarVideo = async (req, res) => {
-  const { titulo, descripcion, etiqueta, miniatura } = req.body
+  const { titulo, descripcion, etiqueta, usuarioId } = req.body
+  const miniatura = req.files.miniatura ? req.files.miniatura[0].path : null;
+  const video = req.files.video ? req.files.video[0].path : null;
+
   try {
-    if (!titulo || !descripcion || !etiqueta || !miniatura) {
+      if (!titulo || !descripcion || !etiqueta || !miniatura || !video || !usuarioId) {
       return res.status(400).json({ message: 'Falta informacion' })
     }
     /*  const today = new Date().dateFormat('isoDate') */
@@ -15,11 +19,19 @@ export const registrarVideo = async (req, res) => {
       descripcion,
       etiqueta,
       fechaSubida: today,
-      miniatura,
-      reproducciones: 0
+      miniatura: miniatura,
+      video: video,
+      reproducciones: 0,
+      usuario: usuarioId
+
     })
 
     const newVideo = await dataVideo.save()
+    await Usuarios.findByIdAndUpdate(
+      usuarioId,
+      { $push: { videos: newVideo._id } },
+      { new: true, useFindAndModify: false }
+    );
     return res.status(201).json({ Video: newVideo })
   } catch (error) {
     console.log('Error', error)

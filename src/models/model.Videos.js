@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 
 const videoSchema = new mongoose.Schema({
   titulo: {
@@ -10,23 +10,33 @@ const videoSchema = new mongoose.Schema({
     required: true
   },
   etiqueta: {
-    type: Array,
+    type: [String],
     required: true
   },
   fechaSubida: {
-    type: String,
+    type: Date,
     required: true
   },
   miniatura: {
     type: String,
     required: true
   },
+  video: { 
+    type: String,
+    required: true
+  },
   reproducciones: {
     type: Number,
-    default: true
+    default: 0
+  },
+  usuario: {
+    type: ObjectId,
+    ref: 'Usuarios', 
+    required: true
   }
+
 })
 
-const videoModel = mongoose.model('Videos', videoSchema)
+const Videos = mongoose.model('Videos', videoSchema)
 
-export default videoModel
+export default Videos
