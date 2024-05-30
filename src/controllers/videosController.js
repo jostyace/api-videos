@@ -1,5 +1,6 @@
 import Usuarios from '../models/model.Usuario.js';
 import videoModel from '../models/model.Videos.js'
+import { reemplazarMiniatura } from '../utils/filemanagement.js';
 
 export const registrarVideo = async (req, res) => {
   const { titulo, descripcion, etiqueta, usuarioId } = req.body
@@ -23,7 +24,6 @@ export const registrarVideo = async (req, res) => {
       video: video,
       reproducciones: 0,
       usuario: usuarioId
-
     })
 
     const newVideo = await dataVideo.save()
@@ -41,19 +41,24 @@ export const registrarVideo = async (req, res) => {
 
 export const actualizarVideo = async (req, res) => {
   const { id } = req.params
-  const { titulo, descripcion, etiqueta, miniatura } = req.body
+  const miniatura = req.files.miniatura ? req.files.miniatura[0].path : null;
+  const { titulo, descripcion, etiqueta } = req.body
   const d = new Date()
   const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
   try {
+    if (miniatura) {
+      await reemplazarMiniatura(miniatura, id);
+    }
     const update = await videoModel.findByIdAndUpdate(id,
       {
         titulo,
         descripcion,
         etiqueta,
-        fechaSubida: today,
         miniatura
       },
       { new: true })
+      console.log("updated")
+
     res.send(update)
   } catch (error) {
     console.error(error)
@@ -65,7 +70,7 @@ export const eliminarVideo = async (req, res) => {
   try {
     const deleteVideo = await videoModel.findByIdAndDelete(req.params.id)
     if (!deleteVideo) {
-      return res.status(400).json({ message: 'No se puedo eliminar el video' })
+      return res.status(400).json({ message: 'No se pudo eliminar el video' })
     }
     res.status(200).json({ message: 'Video Eliminado' })
   } catch (error) {

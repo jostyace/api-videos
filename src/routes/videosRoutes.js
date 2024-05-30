@@ -5,10 +5,12 @@ import { actualizarVideo, categoriaVideo, eliminarVideo, estadisticaCategoria, e
 
 
 const router = express.Router()
+
 // logueadoMiddleware, subirArchivos.single('NuevoVideo')
-router.post('/videos/registro', subirArchivos.fields([{ name: 'miniatura', maxCount: 1 },{ name: 'video', maxCount: 1 }]), registrarVideo)
-router.patch('/videos/actualizar/:id', actualizarVideo)
-router.delete('/videos/delete/:id', eliminarVideo)
+router.post('/videos/subir', subirArchivos.fields([{ name: 'miniatura', maxCount: 1 },{ name: 'video', maxCount: 1 }]), registrarVideo)
+router.patch('/videos/actualizar/:id', subirArchivos.fields([{ name: 'miniatura', maxCount: 1 }]), actualizarVideo)
+router.delete('/videos/eliminar/:id', eliminarVideo)
+
 // logueadoMiddleware, esAdmin,
 router.get('/videos', listadoVideos)
 router.get('/videos/:id', informacionVideo)
