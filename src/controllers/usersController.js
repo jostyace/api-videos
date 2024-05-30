@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { validarCampos, validarId } from '../utils/validation.js';
-import usuarios from '../models/model.Usuario.js';
+import Usuarios from '../models/model.Usuario.js';
 import { reemplazarFoto } from '../utils/filemanagement.js';
 import { JWT_SECRET } from '../config/config.js';
 
@@ -14,7 +14,7 @@ export const registrarUsuario = async (req, res) => {
     await validarCampos(nombre, usuario, contrasena, imagenPerfil, 'create');
     const saltRounds = 10;
     const hashPassword = await bcrypt.hash(contrasena, saltRounds);
-    const newUser = new usuarios({
+    const newUser = new Usuarios({
       nombre, usuario, contrasena: hashPassword, rol: 'user', videos, imagenPerfil, fechaCreacion
     });
 
@@ -32,7 +32,7 @@ export const actualizarUsuario = async (req, res) => {
   try {
     await validarId(id);
     await validarCampos(nombre, usuario, imagenPerfil, contrasena, null, null, 'update');
-    const user = await usuarios.findById(id);
+    const user = await Usuarios.findById(id);
     if (!user) {
       return res.status(400).json({ message: 'No existe un usuario con el ID proporcionado' });
     }
@@ -64,7 +64,7 @@ export const iniciarSesion = async (req, res) => {
       return res.status(400).json({ message: 'Todos los campos son requeridos' });
     }
 
-    const user = await usuarios.findOne({ usuario });
+    const user = await Usuarios.findOne({ usuario });
     if (!user) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
@@ -87,7 +87,7 @@ export const informacionUsuario = async (req, res) => {
   const { id } = req.params;
   try {
     await validarId(id);
-    const usuario = await usuarios.findById(id, '_id nombre usuario rol videos fechaCreacion imagenPerfil');
+    const usuario = await Usuarios.findById(id, '_id nombre usuario rol videos fechaCreacion imagenPerfil');
     if (!usuario) {
       return res.status(404).json({ message: 'No existe un usuario con el ID proporcionado' });
     }
@@ -100,7 +100,7 @@ export const informacionUsuario = async (req, res) => {
 
 export const listadoUsuarios = async (req, res) => {
   try {
-    const listausuarios = await usuarios.find({}, '_id nombre usuario rol videos fechaCreacion imagenPerfil');
+    const listausuarios = await Usuarios.find({}, '_id nombre usuario rol videos fechaCreacion imagenPerfil');
     res.json({ listausuarios });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -111,7 +111,7 @@ export const eliminarUsuario = async (req, res) => {
   const { id } = req.params;
   try {
     await validarId(id);
-    const user = await usuarios.findByIdAndDelete(id);
+    const user = await Usuarios.findByIdAndDelete(id);
     if (!user) {
       return res.status(404).json({ message: 'No existe un usuario con el ID proporcionado' });
     }

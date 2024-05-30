@@ -43,7 +43,7 @@ export async function validarId(id) {
     }
   
   }
-}
+
 
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
