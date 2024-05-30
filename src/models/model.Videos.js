@@ -1,9 +1,6 @@
 import mongoose from 'mongoose'
 
 const videoSchema = new mongoose.Schema({
-  _id: {
-    type: Number
-  },
   titulo: {
     type: String,
     required: true

@@ -1,9 +1,6 @@
 import mongoose from 'mongoose'
 
 const usuarioSchema = new mongoose.Schema({
-  _id: {
-    type: Number
-  },
   nombre:{
     type:String,
     required:true,
@@ -12,7 +9,7 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  contraseña: {
+  contrasena: {
     type: String,
     required: true
   },
@@ -20,14 +17,18 @@ const usuarioSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  imagenPerfil: {
+    type: String,
+    required: false
+  },
   rol: {
     type: String,
     required: true
   },
-  videos: {
-    type: Array,
-    required: true
-  }
+  videos: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Videos'
+  }]
 })
 
 const usuarios = mongoose.model('usuarios', usuarioSchema)
