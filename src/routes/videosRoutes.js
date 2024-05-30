@@ -5,6 +5,7 @@ import {
   actualizarUsuario,
   informacionUsuario
 } from '../controllers/usersController.js'
+import { logueadoMiddleware } from '../middleware/logueadoMiddleware.js'
 
 
 const router = express.Router()
