@@ -1,9 +1,6 @@
 import mongoose from 'mongoose'
 
 const videoSchema = new mongoose.Schema({
-  _id: {
-    type: Number
-  },
   titulo: {
     type: String,
     required: true
@@ -13,11 +10,11 @@ const videoSchema = new mongoose.Schema({
     required: true
   },
   etiqueta: {
-    type: String,
+    type: Array,
     required: true
   },
   fechaSubida: {
-    type: Date,
+    type: String,
     required: true
   },
   miniatura: {
@@ -30,6 +27,6 @@ const videoSchema = new mongoose.Schema({
   }
 })
 
-const videos = mongoose.model('Videos', videoSchema)
+const videoModel = mongoose.model('Videos', videoSchema)
 
-export default videos
+export default videoModel
