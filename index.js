@@ -11,7 +11,7 @@ const PORT = 3000
 
 connectDB()
 app.use(express.static('public'))
-app.use(cors({ 
+app.use(cors({
   origin: FRONT_URL,
   methods: ['GET', 'POST', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
