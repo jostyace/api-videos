@@ -6,12 +6,12 @@ const feedbackSchema = new Schema({
   videoId: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'Video'
+    ref: 'Videos'
   },
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
+    ref: 'Usuarios'
   },
   timestamp: {
     type: Number,

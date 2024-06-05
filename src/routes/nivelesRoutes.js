@@ -1,5 +1,4 @@
 import express from 'express'
-import { informacionUsuario, iniciarSesion } from '../controllers/usersController.js'
 import { crearNivel, editarNivel, eliminarNivel, listarNiveles, obtenerNivelPorId } from '../controllers/nivelesController.js'
 
 const router = express.Router()

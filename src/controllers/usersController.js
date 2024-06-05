@@ -25,6 +25,27 @@ export const registrarUsuario = async (req, res) => {
   }
 };
 
+export const registrarDocente = async (req, res) => {
+  const { nombre, usuario, contrasena, nivel } = req.body;
+  const imagenPerfil = req.file ? req.file.filename : null;
+  const fechaCreacion = new Date();
+
+  try {
+    await validarCampos(nombre, usuario, contrasena, imagenPerfil, null, 'create');
+    const saltRounds = 10;
+    const hashPassword = await bcrypt.hash(contrasena, saltRounds);
+    const newUser = new Usuarios({
+      nombre, usuario, contrasena: hashPassword, rol: 'docente', videos: [], imagenPerfil, nivel, fechaCreacion
+    });
+
+    await newUser.save();
+    res.json({ message: 'Docente creado correctamente', newUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 export const actualizarUsuario = async (req, res) => {
   const { id } = req.params;
   const { nombre, usuario, contrasena, rol, videos } = req.body;

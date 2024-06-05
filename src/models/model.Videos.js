@@ -33,6 +33,11 @@ const videoSchema = new mongoose.Schema({
     type: ObjectId,
     ref: 'Usuarios', 
     required: true
+  },
+  tarea: {
+    type: ObjectId,
+    ref: 'Tareas', 
+    required: false
   }
 
 })

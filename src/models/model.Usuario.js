@@ -32,7 +32,7 @@ const usuarioSchema = new mongoose.Schema({
   nivel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Nivel',
-    required: true,
+    required: false,
   }
 })
 

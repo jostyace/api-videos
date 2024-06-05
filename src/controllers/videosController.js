@@ -3,7 +3,7 @@ import videoModel from '../models/model.Videos.js'
 import { reemplazarMiniatura, eliminarVideofile, eliminarMiniatura } from '../utils/filemanagement.js';
 
 export const registrarVideo = async (req, res) => {
-  const { titulo, descripcion, etiqueta, usuarioId } = req.body
+  const { titulo, descripcion, etiqueta, usuarioId, tareaId } = req.body
   const miniatura = req.files.miniatura ? req.files.miniatura[0].filename : null;
   const video = req.files.video ? req.files.video[0].filename : null;
   console.log(req.files.video[0])
@@ -12,9 +12,6 @@ export const registrarVideo = async (req, res) => {
       if (!titulo || !descripcion || !etiqueta || !miniatura || !video || !usuarioId) {
       return res.status(400).json({ message: 'Falta informacion' })
     }
-    /*  const today = new Date().dateFormat('isoDate') */
-    /*    const today = dateFormat('isoDate') */
-    const d = new Date()
     const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
     const dataVideo = new videoModel({
       titulo,
@@ -24,7 +21,8 @@ export const registrarVideo = async (req, res) => {
       miniatura: miniatura,
       video: video,
       reproducciones: 0,
-      usuario: usuarioId
+      usuario: usuarioId,
+      tarea: tareaId || ''
     })
 
     const newVideo = await dataVideo.save()
@@ -68,23 +66,34 @@ export const actualizarVideo = async (req, res) => {
 }
 
 export const eliminarVideo = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
+  
   try {
-    const video = await videoModel.findById(id)
-    console.log(video)
-    eliminarVideofile(video.video)
-    eliminarMiniatura(video.miniatura)
-    const deleteVideo = await videoModel.findByIdAndDelete(req.params.id)
-    if (!deleteVideo) {
-      return res.status(400).json({ message: 'No se pudo eliminar el video' })
+    const video = await videoModel.findById(id);
+    if (!video) {
+      return res.status(404).json({ message: 'Video no encontrado' });
     }
-    
-    res.status(200).json({ message: 'Video Eliminado' })
+
+    eliminarVideofile(video.video);
+    eliminarMiniatura(video.miniatura);
+
+    const deleteVideo = await videoModel.findByIdAndDelete(id);
+    if (!deleteVideo) {
+      return res.status(400).json({ message: 'No se pudo eliminar el video' });
+    }
+
+    await Usuarios.findByIdAndUpdate(
+      video.usuario,
+      { $pull: { videos: id } },
+      { new: true, useFindAndModify: false }
+    );
+
+    res.status(200).json({ message: 'Video eliminado correctamente' });
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: 'Error Interno' })
+    console.error(error);
+    res.status(500).json({ message: 'Error Interno' });
   }
-}
+};
 
 export const listadoVideos = async (req, res) => {
   try {

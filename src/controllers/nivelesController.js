@@ -2,15 +2,16 @@ import Niveles from '../models/model.Niveles.js';
 import { validarId, validarNombreNivel } from '../utils/validation.js';
 
 export const crearNivel = async (req, res) => {
-    const { nombre } = req.body;
+    const { nombre, docente } = req.body;
   
     try {
       const { error, mensaje } = validarNombreNivel(nombre);
+      validarId(docente)
       if (error) {
         return res.status(400).json({ mensaje });
       }
   
-      const nuevoNivel = new Niveles({ nombre });
+      const nuevoNivel = new Niveles({ nombre, docente });
       await nuevoNivel.save();
       res.status(201).json(nuevoNivel);
     } catch (error) {
