@@ -6,16 +6,16 @@ import { reemplazarFoto } from '../utils/filemanagement.js';
 import { JWT_SECRET } from '../config/config.js';
 
 export const registrarUsuario = async (req, res) => {
-  const { nombre, usuario, contrasena, rol, videos } = req.body;
+  const { nombre, usuario, contrasena, nivel, videos } = req.body;
   const imagenPerfil = req.file ? req.file.filename : null;
   const fechaCreacion = new Date();
 
   try {
-    await validarCampos(nombre, usuario, contrasena, imagenPerfil, 'create');
+    await validarCampos(nombre, usuario, contrasena, imagenPerfil, nivel, 'create');
     const saltRounds = 10;
     const hashPassword = await bcrypt.hash(contrasena, saltRounds);
     const newUser = new Usuarios({
-      nombre, usuario, contrasena: hashPassword, rol: 'user', videos, imagenPerfil, fechaCreacion
+      nombre, usuario, contrasena: hashPassword, rol: 'user', videos, imagenPerfil, nivel, fechaCreacion
     });
 
     await newUser.save();
@@ -31,7 +31,7 @@ export const actualizarUsuario = async (req, res) => {
   const imagenPerfil = req.file ? req.file.filename : null;
   try {
     await validarId(id);
-    await validarCampos(nombre, usuario, imagenPerfil, contrasena, null, null, 'update');
+    await validarCampos(nombre, usuario, contrasena, imagenPerfil, nivel, 'update');
     const user = await Usuarios.findById(id);
     if (!user) {
       return res.status(400).json({ message: 'No existe un usuario con el ID proporcionado' });

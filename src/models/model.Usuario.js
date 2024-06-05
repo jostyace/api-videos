@@ -23,12 +23,17 @@ const usuarioSchema = new mongoose.Schema({
   },
   rol: {
     type: String,
-    required: true
+    required: false
   },
   videos: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Videos'
-  }]
+  }],
+  nivel: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Nivel',
+    required: true,
+  }
 })
 
 const Usuarios = mongoose.model('Usuarios', usuarioSchema)
