@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const usuarioSchema = new mongoose.Schema({
-  nombre:{
-    type:String,
-    required:true,
+  nombre: {
+    type: String,
+    required: true,
   },
   usuario: {
     type: String,
@@ -30,8 +30,7 @@ const usuarioSchema = new mongoose.Schema({
     ref: 'Videos'
   }],
   nivel: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Nivel',
+    type: Number,  
     required: true,
   }
 })
