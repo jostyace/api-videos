@@ -5,7 +5,7 @@ import Videos from '../models/model.Videos.js';
 export const basePath = process.cwd();
 
 export function eliminarArchivo(nombre) {
-  const archivo = basePath + 'public/uploads/profile/' + nombre;
+  const archivo = basePath + '/public/uploads/profile/' + nombre;
   const aEliminar = path.resolve(archivo);
   fs.access(archivo, fs.constants.F_OK, (err) => {
     if (!err) {
@@ -15,9 +15,20 @@ export function eliminarArchivo(nombre) {
 }
 
 export function eliminarMiniatura(miniatura) {
-  const archivo = basePath + '/' + miniatura;
+  const archivo = basePath + '/public/uploads/miniaturas/' + miniatura;
   const aEliminar = path.resolve(archivo);
-  console.log(aEliminar)
+  fs.access(archivo, fs.constants.F_OK, (err) => {
+    if (!err) {
+      fs.unlinkSync(aEliminar);
+    }
+  });
+}
+
+export function eliminarVideofile(video) {
+  console.log(video)
+  const archivo = basePath + '/public/uploads/videos/' + video;
+  console.log(archivo)
+  const aEliminar = path.resolve(archivo);
   fs.access(archivo, fs.constants.F_OK, (err) => {
     if (!err) {
       fs.unlinkSync(aEliminar);
@@ -28,8 +39,6 @@ export function eliminarMiniatura(miniatura) {
 export async function reemplazarFoto(picture, id) {
   try {
     const usuario = await usuarios.findById(id).select('imagenPerfil');
-    console.log(usuario)
-    console.log(picture)
     if (usuario && usuario.imagenPerfil !== picture) {
       eliminarArchivo(usuario.imagenPerfil);
     }

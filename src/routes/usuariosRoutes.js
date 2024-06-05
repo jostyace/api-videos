@@ -15,17 +15,17 @@ import {
 const router = express.Router()
 
 //Sin Middleware de Auth
-router.post('/usuarios/registro', subirArchivos.single('imagenPerfil'), registrarUsuario)
-router.post('/usuarios/login', iniciarSesion)
+router.post('/registro', subirArchivos.single('imagenPerfil'), registrarUsuario)
+router.post('/login', iniciarSesion)
 
 //Varificar login con Middleware de Auth
-router.get('/usuarios/:id',  informacionUsuario)
-router.get('/usuarios/reproducciones/:id', historialUsuario)
-router.get('/usuarios/videos/:id', videosUsuario)
-router.patch('/usuarios/actualizar/:id', subirArchivos.single('imagenPerfil'), actualizarUsuario)
-router.delete('/usuarios/eliminar/:id', eliminarUsuario)
+router.get('/:id',  informacionUsuario)
+router.get('/reproducciones/:id', historialUsuario)
+router.get('/videos/:id', videosUsuario)
+router.patch('/actualizar/:id', subirArchivos.single('imagenPerfil'), actualizarUsuario)
+router.delete('/eliminar/:id', eliminarUsuario)
 
 //Verificar si el Usuario es Admin (Teacher)
-router.get('/usuarios', listadoUsuarios)
+router.get('/', listadoUsuarios)
 
 export default router
