@@ -216,23 +216,31 @@ export const estadisticaCategoria = async (req, res) => {
       }
     };
 
-    // Generar el gráfico y guardarlo como imagen
     (async () => {
-      const image = await chartJSNodeCanvas.renderToBuffer(configuration)
-      res.send(image)
-      /* fs.writeFileSync('etiquetas_chart.png', image)
-      console.log('Gráfico generado y guardado como etiquetas_chart.png') */
+      try {
+        // Renderizar el gráfico a un buffer
+        const imageBuffer = await chartJSNodeCanvas.renderToBuffer(configuration)
+        const rutaAbosuta = '../api-videos/public/uploads/estadisticas'
+        const directActual = process.cwd()
+        const __dirname = path.resolve(directActual, rutaAbosuta)
+        const nombreFile = Date.now() + '-' + 'categorias.jpg'
+        // Ruta donde se guardará la imagen
+        const outputPath = path.join(__dirname, nombreFile)
+        // Guardar el buffer en un archivo
+        fs.writeFile(outputPath, imageBuffer, (err) => {
+          if (err) {
+            console.error('Error al guardar la imagen:', err)
+          }
+        })
+        console.log('Imagen guardada exitosamente en', nombreFile)
+        /* res.status(200).json(nombreFile) */
+        res.status(200).json(outputPath)
+      } catch (error) {
+        console.error('Error al renderizar el gráfico:', error)
+      }
     })()
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Error Interno' })
   }
 }
-
-/* export const estadisticasFecha = async (req, res) =>{
-  try{
-
-  }catch(){
-
-  }
-} */
