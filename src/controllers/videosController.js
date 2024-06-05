@@ -1,6 +1,9 @@
+import fs from 'fs/promises'
 import Usuarios from '../models/model.Usuario.js'
 import videoModel from '../models/model.Videos.js'
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas'
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
 /* import ChartJSNodeCanvas from 'chart.js/auto' */
 
 export const registrarVideo = async (req, res) => {
@@ -140,8 +143,27 @@ export const estadisticaReproduccion = async (req, res) => {
     };
 
     (async () => {
-      const image = await chartJSNodeCanvas.renderToBuffer(configuration)
-      res.send(image)
+      try {
+        // Renderizar el gráfico a un buffer
+        const imageBuffer = await chartJSNodeCanvas.renderToBuffer(configuration)
+        const rutaAbosuta = '../api-videos/public/uploads/estadisticas'
+        const directActual = process.cwd()
+        const __dirname = path.resolve(directActual, rutaAbosuta)
+        const nombreFile = Date.now() + '-' + 'reproduccion.jpg'
+        // Ruta donde se guardará la imagen
+        const outputPath = path.join(__dirname, nombreFile)
+        // Guardar el buffer en un archivo
+        fs.writeFile(outputPath, imageBuffer, (err) => {
+          if (err) {
+            console.error('Error al guardar la imagen:', err)
+          }
+        })
+        console.log('Imagen guardada exitosamente en', nombreFile)
+        /* res.status(200).json(nombreFile) */
+        res.status(200).json(outputPath)
+      } catch (error) {
+        console.error('Error al renderizar el gráfico:', error)
+      }
     })()
   } catch (error) {
     console.error(error)
