@@ -1,5 +1,5 @@
 import express from 'express'
-import { crearTarea, editarTarea, eliminarTarea, listarTareas, listarTareasPorNivel, obtenerTareaPorId } from '../controllers/tareasController.js'
+import { crearTarea, editarTarea, videosTareas, eliminarTarea, listarTareas, listarTareasPorNivel, obtenerTareaPorId } from '../controllers/tareasController.js'
 
 const router = express.Router()
 
