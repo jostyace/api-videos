@@ -1,14 +1,33 @@
 import Usuarios from '../models/model.Usuario.js';
 import videoModel from '../models/model.Videos.js'
 import { reemplazarMiniatura } from '../utils/filemanagement.js';
+import path from 'node:path'
+import ffmpeg from 'fluent-ffmpeg'
 
 export const registrarVideo = async (req, res) => {
   const { titulo, descripcion, etiqueta, usuarioId } = req.body
-  const miniatura = req.files.miniatura ? req.files.miniatura[0].path : null;
-  const video = req.files.video ? req.files.video[0].path : null;
+  // const miniatura = req.files.miniatura ? req.files.miniatura[0].filename : null;
+
+  const video = req.files.video ? req.files.video[0].filename : null;
+  const rutaVideo = path.resolve(`./${req.files.video[0].destination}${video}`)
+  const rutaMiniatura = path.resolve(`./public/uploads/miniaturas`)
+  console.log('rutaVideo', rutaVideo)
+  console.log('rutaMiniatura', rutaMiniatura)
+
+  ffmpeg(rutaVideo).on('end', () => {
+    console.log('Miniatura creada')
+  }).on('error', (err) => {
+    console.log('Error en la miniatura', err)
+  }).screenshots({
+    count: 1,
+    folder: rutaMiniatura,
+    filename: 'miniatura.png',
+    size: '320x240',
+    timestamps: ['50%']
+  })
 
   try {
-      if (!titulo || !descripcion || !etiqueta || !miniatura || !video || !usuarioId) {
+    if (!titulo || !descripcion || !etiqueta || !video || !usuarioId) {
       return res.status(400).json({ message: 'Falta informacion' })
     }
     /*  const today = new Date().dateFormat('isoDate') */
@@ -20,11 +39,20 @@ export const registrarVideo = async (req, res) => {
       descripcion,
       etiqueta,
       fechaSubida: today,
-      miniatura: miniatura,
+      miniatura: rutaMiniatura,
       video: video,
       reproducciones: 0,
       usuario: usuarioId
     })
+
+    // console.log('Datos recibidos:', {
+    //   titulo,
+    //   descripcion,
+    //   etiqueta,
+    //   usuarioId,
+    //   miniatura: req.body.miniatura,
+    //   video: req.files.video[0]
+    // });
 
     const newVideo = await dataVideo.save()
     await Usuarios.findByIdAndUpdate(
@@ -57,7 +85,7 @@ export const actualizarVideo = async (req, res) => {
         miniatura
       },
       { new: true })
-      console.log("updated")
+    console.log("updated")
 
     res.send(update)
   } catch (error) {

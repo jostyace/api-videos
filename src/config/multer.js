@@ -42,9 +42,9 @@ const fileFilter = (req, file, cb) => {
       return cb(new Error('Solo se permiten archivos de imagen'));
     }
   } else if (file.fieldname === 'video') {
-    if (!file.originalname.match(/\.(mp4|webm)$/)) {
+    /* if (!file.originalname.match(/\.(mp4|webm)$/)) {
       return cb(new Error('Solo se permiten archivos de video'));
-    }
+    } */
   } else {
     return cb(new Error('Tipo de archivo no permitido'));
   }

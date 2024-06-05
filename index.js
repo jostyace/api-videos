@@ -5,9 +5,12 @@ import videosRoutes from './src/routes/videosRoutes.js'
 import { connectDB } from './src/config/db.js'
 import { FRONT_URL } from './src/config/config.js'
 import user from './src/route.js'
+import morgan from 'morgan'
 
 const app = express()
 const PORT = 3000
+
+app.use(morgan('dev'))
 
 connectDB()
 app.use(express.static('public'))
