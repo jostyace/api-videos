@@ -117,6 +117,31 @@ export const informacionVideo = async (req, res) => {
   }
 }
 
+
+export const listadoVideosPorTarea = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const listaDeVideos = await videoModel.find({ tarea: id })
+    res.json({ listaDeVideos })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+export const listadoVideosPorUsuario = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const listaDeVideos = await videoModel.find({ usuario: id })
+    res.json({ listaDeVideos })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+
+
 export const categoriaVideo = async (req, res) => {
   const categoria = req.params.etiqueta
   try {

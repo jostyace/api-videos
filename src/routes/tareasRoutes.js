@@ -1,5 +1,5 @@
 import express from 'express'
-import { crearTarea, editarTarea, eliminarTarea, listarTareas, obtenerTareaPorId } from '../controllers/tareasController.js'
+import { crearTarea, editarTarea, eliminarTarea, listarTareas, listarTareasPorNivel, obtenerTareaPorId } from '../controllers/tareasController.js'
 
 const router = express.Router()
 
@@ -10,6 +10,7 @@ router.delete('/eliminar/:id',  eliminarTarea)
 
 //Ruta no protegida, dispobible para el formulario de Registro
 router.get('/',  listarTareas)
+router.get('/nivel/:id',  listarTareasPorNivel)
 router.get('/videos/:id', videosTareas)
 router.get('/nivel/nivel_id',  listarTareas)
 router.get('/:id',  obtenerTareaPorId)
