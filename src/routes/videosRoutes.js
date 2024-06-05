@@ -1,7 +1,7 @@
 import express from 'express'
 import { subirArchivos } from '../config/multer.js'
 import { logueadoMiddleware } from '../middleware/logueadoMiddleware.js'
-import { actualizarVideo, categoriaVideo, eliminarVideo, estadisticaCategoria, estadisticaReproduccion, informacionVideo, listadoVideos, registrarVideo } from '../controllers/videosController.js'
+import { actualizarVideo, categoriaVideo, eliminarVideo, estadisticaCategoria, estadisticaReproduccion, listadoVideosPorTarea, informacionVideo, listadoVideos, registrarVideo, listadoVideosPorUsuario } from '../controllers/videosController.js'
 
 
 const router = express.Router()
@@ -13,6 +13,8 @@ router.delete('/eliminar/:id', eliminarVideo)
 
 // logueadoMiddleware, esAdmin,
 router.get('/', listadoVideos)
+router.get('/tareas/:id', listadoVideosPorTarea)
+router.get('/usuario/:id', listadoVideosPorUsuario)
 router.get('/:id', informacionVideo)
 router.get('/etiqueta/:etiqueta', categoriaVideo)
 router.get('/estadísticas/reproducciones/:id ', estadisticaReproduccion)

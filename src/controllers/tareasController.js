@@ -93,3 +93,21 @@ export const obtenerTareaPorId = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener la tarea', error });
   }
 };
+
+export const listarTareasPorNivel = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await validarId(id);
+
+    const tareas = await Tareas.find({ nivel: id });
+    if (!tareas || tareas.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron tareas para este nivel' });
+    }
+
+    res.status(200).json(tareas);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener las tareas', error });
+  }
+};
+
