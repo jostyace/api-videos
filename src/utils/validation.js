@@ -25,7 +25,8 @@ export async function validarId(id) {
     const usernameDuplicated = await usuarios.find({ usuario });
 
     if (action === 'create') {
-      if (!nombre || !usuario || !contrasena || !nivel) {
+
+      if (!nombre || !usuario || !contrasena ) {
         throw new Error('Llene los campos obligatorios');
       }
       if (!isValidEmail(usuario)) {
@@ -75,5 +76,27 @@ export const validarNombreNivel = (nombre) => {
     return { error: true, mensaje: 'El nombre del nivel no puede comenzar con un espacio' };
   }
 
+  return { error: false, mensaje: '' };
+};
+
+
+
+export const validarNombreTarea = (nombre) => {
+  if (!nombre || typeof nombre !== 'string' || nombre.trim().length === 0) {
+    return { error: true, mensaje: 'El nombre es obligatorio y debe ser una cadena no vacía' };
+  }
+  if (nombre.length > 250) {
+    return { error: true, mensaje: 'El nombre no puede exceder los 250 caracteres' };
+  }
+  return { error: false, mensaje: '' };
+};
+
+export const validarDescripcionTarea = (descripcion) => {
+  if (!descripcion || typeof descripcion !== 'string' || descripcion.trim().length === 0) {
+    return { error: true, mensaje: 'La descripción es obligatoria y debe ser una cadena no vacía' };
+  }
+  if (descripcion.length > 500) {
+    return { error: true, mensaje: 'La descripción no puede exceder los 500 caracteres' };
+  }
   return { error: false, mensaje: '' };
 };

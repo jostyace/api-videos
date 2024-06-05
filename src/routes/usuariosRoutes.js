@@ -9,7 +9,8 @@ import {
   videosUsuario,
   historialUsuario,
   eliminarUsuario,
-  iniciarSesion
+  iniciarSesion,
+  registrarDocente
 } from '../controllers/usersController.js'
 
 const router = express.Router()
@@ -20,6 +21,7 @@ router.post('/login', iniciarSesion)
 
 //Varificar login con Middleware de Auth
 router.get('/:id',  informacionUsuario)
+router.post('/registrodocente', subirArchivos.single('imagenPerfil'), registrarDocente)
 router.get('/reproducciones/:id', historialUsuario)
 router.get('/videos/:id', videosUsuario)
 router.patch('/actualizar/:id', subirArchivos.single('imagenPerfil'), actualizarUsuario)

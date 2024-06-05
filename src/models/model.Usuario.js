@@ -30,8 +30,9 @@ const usuarioSchema = new mongoose.Schema({
     ref: 'Videos'
   }],
   nivel: {
-    type: Number,  
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Nivel',
+    required: false,
   }
 })
 
