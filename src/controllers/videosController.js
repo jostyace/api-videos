@@ -14,7 +14,7 @@ export const registrarVideo = async (req, res) => {
     }
     const d = new Date()
     const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
-    const dataVideo = new videoModel({
+    const dataVideo = {
       titulo,
       descripcion,
       etiqueta,
@@ -22,13 +22,15 @@ export const registrarVideo = async (req, res) => {
       miniatura: miniatura,
       video: video,
       reproducciones: 0,
-      usuario: usuarioId,
-      if (tareaId){
-        tarea: tareaId || ''
-      }
-          })
+      usuario: usuarioId
+    };
 
-    const newVideo = await dataVideo.save()
+    if (tareaId && tareaId.trim() !== '') {
+      dataVideo.tarea = tareaId;
+    }
+
+    const newVideo = new videoModel(dataVideo);
+    await newVideo.save();
     await Usuarios.findByIdAndUpdate(
       usuarioId,
       { $push: { videos: newVideo._id } },
