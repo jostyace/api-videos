@@ -3,6 +3,7 @@ import VideoModel from '../models/model.Videos.js'
 import path from 'node:path'
 import fs from 'node:fs'
 import { reemplazarMiniatura, eliminarVideofile, eliminarMiniatura } from '../utils/filemanagement.js'
+import { ChartJSNodeCanvas } from 'chartjs-node-canvas'
 
 export const registrarVideo = async (req, res) => {
   const { titulo, descripcion, etiqueta, usuarioId, tareaId } = req.body
@@ -30,6 +31,7 @@ export const registrarVideo = async (req, res) => {
     if (tareaId && tareaId.trim() !== '') {
       dataVideo.tarea = tareaId
     }
+
 
     const newVideo = new VideoModel(dataVideo)
     await newVideo.save()
@@ -175,15 +177,10 @@ export const categoriaVideo = async (req, res) => {
 }
 
 export const estadisticaReproduccion = async (req, res) => {
+  const { id } = req.params
   try {
-    const miVideo = await VideoModel.findById(req.params.id)
-    if (!miVideo) {
-      return res.status(404).send('Video no encontrado')
-    }
-    res.send(miVideo)
+    const videos = await videoModel.find({ usuario: id })
 
-    const videos = await videoModel.find({})
-    /* res.send(listaDeVideos) */
     const width = 600 // ancho del gráfico
     const height = 400 // alto del gráfico
     const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height })
@@ -230,7 +227,7 @@ export const estadisticaReproduccion = async (req, res) => {
         })
         console.log('Imagen guardada exitosamente en', nombreFile)
         /* res.status(200).json(nombreFile) */
-        res.status(200).sendFile(outputPath)
+        res.status(200).json({ file: nombreFile })
       } catch (error) {
         console.error('Error al renderizar el gráfico:', error)
       }
@@ -242,11 +239,12 @@ export const estadisticaReproduccion = async (req, res) => {
 }
 
 export const estadisticaCategoria = async (req, res) => {
+  const { id } = req.params
   try {
-    const videos = await videoModel.find({})
+    const videos = await videoModel.find({ usuario: id })
     /* res.send(videos) */
-    const width = 800 // ancho del gráfico
-    const height = 600 // alto del gráfico
+    const width = 600 // ancho del gráfico
+    const height = 400 // alto del gráfico
     const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height })
     // Contar la frecuencia de cada etiqueta
     const etiquetaCount = {}
@@ -303,7 +301,7 @@ export const estadisticaCategoria = async (req, res) => {
           }
         })
         console.log('Imagen guardada exitosamente en', nombreFile)
-        res.status(200).json(nombreFile)
+        res.status(200).json({ file: nombreFile })
       } catch (error) {
         console.error('Error al renderizar el gráfico:', error)
       }

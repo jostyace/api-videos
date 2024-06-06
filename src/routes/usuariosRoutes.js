@@ -20,7 +20,8 @@ const router = express.Router()
 router.post('/registro', subirArchivos.single('imagenPerfil'), registrarUsuario)
 router.post('/login', iniciarSesion)
 
-// Varificar login con Middleware de Auth
+//Varificar login con Middleware de Auth
+
 router.get('/:id', informacionUsuario)
 router.post('/registrodocente', subirArchivos.single('imagenPerfil'), registrarDocente)
 router.get('/reproducciones/:id', historialUsuario)
