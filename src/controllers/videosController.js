@@ -7,10 +7,8 @@ import { reemplazarMiniatura, eliminarVideofile, eliminarMiniatura } from '../ut
 export const registrarVideo = async (req, res) => {
   const { titulo, descripcion, etiqueta, usuarioId, tareaId } = req.body
 
-  const miniatura = req.files.miniatura ? req.files.miniatura[0].filename : null;
-  const video = req.files.video ? req.files.video[0].filename : null;
-
-
+  const miniatura = req.files.miniatura ? req.files.miniatura[0].filename : null
+  const video = req.files.video ? req.files.video[0].filename : null
 
   try {
     if (!titulo || !descripcion || !etiqueta || !video || !miniatura || !usuarioId) {
@@ -76,7 +74,6 @@ export const eliminarVideo = async (req, res) => {
   const { id } = req.params
 
   try {
-
     const video = await VideoModel.findById(id)
 
     if (!video) {
@@ -85,7 +82,6 @@ export const eliminarVideo = async (req, res) => {
 
     eliminarVideofile(video.video)
     eliminarMiniatura(video.miniatura)
-
 
     const deleteVideo = await VideoModel.findByIdAndDelete(id)
 
@@ -98,7 +94,6 @@ export const eliminarVideo = async (req, res) => {
       { $pull: { videos: id } },
       { new: true, useFindAndModify: false }
     )
-
 
     res.status(200).json({ message: 'Video eliminado correctamente' })
   } catch (error) {
@@ -121,7 +116,6 @@ export const getMiniatura = async (req, res) => {
     })
   } catch (error) {
     res.json({ error: error.message })
-
   }
 }
 
@@ -135,8 +129,9 @@ export const listadoVideos = async (req, res) => {
 }
 
 export const informacionVideo = async (req, res) => {
+  const { id } = req.params
   try {
-    const miVideo = await VideoModel.findById(req.params.id)
+    const miVideo = await VideoModel.findById(id)
     if (!miVideo) {
       return res.status(404).send('Video no encontrado')
     }
@@ -181,7 +176,6 @@ export const categoriaVideo = async (req, res) => {
 
 export const estadisticaReproduccion = async (req, res) => {
   try {
-
     const miVideo = await VideoModel.findById(req.params.id)
     if (!miVideo) {
       return res.status(404).send('Video no encontrado')
@@ -241,7 +235,6 @@ export const estadisticaReproduccion = async (req, res) => {
         console.error('Error al renderizar el gráfico:', error)
       }
     })()
-
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Error Interno' })
