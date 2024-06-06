@@ -3,6 +3,7 @@ import { subirArchivos } from '../config/multer.js'
 import { logueadoMiddleware } from '../middleware/logueadoMiddleware.js'
 import { actualizarVideo, categoriaVideo, eliminarVideo, estadisticaCategoria, estadisticaReproduccion, listadoVideosPorTarea, informacionVideo, listadoVideos, registrarVideo, listadoVideosPorUsuario, getMiniatura, getGrafica } from '../controllers/videosController.js'
 
+
 const router = express.Router()
 
 // logueadoMiddleware, subirArchivos.single('NuevoVideo')

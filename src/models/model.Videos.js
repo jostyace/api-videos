@@ -21,7 +21,7 @@ const videoSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  video: { 
+  video: {
     type: String,
     required: true
   },
@@ -31,12 +31,12 @@ const videoSchema = new mongoose.Schema({
   },
   usuario: {
     type: ObjectId,
-    ref: 'Usuarios', 
+    ref: 'Usuarios',
     required: true
   },
   tarea: {
     type: ObjectId,
-    ref: 'Tareas', 
+    ref: 'Tareas',
     required: false
   }
 

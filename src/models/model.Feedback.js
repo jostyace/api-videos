@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const { Schema, model } = mongoose;
+const { Schema, model } = mongoose
 
 const feedbackSchema = new Schema({
   videoId: {
@@ -25,8 +25,8 @@ const feedbackSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
-const Feedback = model('Feedback', feedbackSchema);
+const Feedback = model('Feedback', feedbackSchema)
 
-export default Feedback;
+export default Feedback
