@@ -6,16 +6,17 @@ import { reemplazarMiniatura, eliminarVideofile, eliminarMiniatura } from '../ut
 
 export const registrarVideo = async (req, res) => {
   const { titulo, descripcion, etiqueta, usuarioId, tareaId } = req.body
-  const miniatura = req.files.miniatura ? req.files.miniatura[0].filename : null
-  const video = req.files.video ? req.files.video[0].filename : null
-  console.log(req.files.video[0])
+  const miniatura = req.files.miniatura ? req.files.miniatura[0].filename : null;
+  const video = req.files.video ? req.files.video[0].filename : null;
+
 
   try {
-    if (!titulo || !descripcion || !etiqueta || !miniatura || !video || !usuarioId) {
+      if (!titulo || !descripcion || !etiqueta ||  !video || !miniatura || !usuarioId) {
       return res.status(400).json({ message: 'Falta informacion' })
     }
+    const d = new Date()
     const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
-    const dataVideo = new videoModel({
+    const dataVideo = {
       titulo,
       descripcion,
       etiqueta,
@@ -23,11 +24,15 @@ export const registrarVideo = async (req, res) => {
       miniatura,
       video,
       reproducciones: 0,
-      usuario: usuarioId,
-      tarea: tareaId || ''
-    })
+      usuario: usuarioId
+    };
 
-    const newVideo = await dataVideo.save()
+    if (tareaId && tareaId.trim() !== '') {
+      dataVideo.tarea = tareaId;
+    }
+
+    const newVideo = new videoModel(dataVideo);
+    await newVideo.save();
     await Usuarios.findByIdAndUpdate(
       usuarioId,
       { $push: { videos: newVideo._id } },
