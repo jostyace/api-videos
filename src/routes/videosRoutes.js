@@ -17,8 +17,8 @@ router.get('/tareas/:id', listadoVideosPorTarea)
 router.get('/usuario/:id', listadoVideosPorUsuario)
 router.get('/:id', informacionVideo)
 router.get('/etiqueta/:etiqueta', categoriaVideo)
-router.get('/estadisticas/reproducciones/:id ', estadisticaReproduccion)
-router.get('/estadisticas/etiquetas/:nombre_etiqueta ', estadisticaCategoria)
+router.get('/estadisticas/reproducciones/:id', estadisticaReproduccion) // id del usuario
+router.get('/estadisticas/etiquetas/:id', estadisticaCategoria)
 router.get('/estadisticas/getGrafica/:filename', getGrafica)
 
 export default router
