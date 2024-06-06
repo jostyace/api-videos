@@ -1,27 +1,27 @@
 import mongoose, { Schema } from 'mongoose'
 
 const tareasSchema = new mongoose.Schema({
-  nombre:{
+  nombre: {
     type: String,
     required: true,
     maxlength: 250
-    },
-  descripcion:{
+  },
+  descripcion: {
     type: String,
     required: true,
-    maxlength: 500 },
+    maxlength: 500
+  },
   nivel: {
     type: Schema.Types.ObjectId,
     required: false,
     ref: 'Niveles'
-   },
-   docente: {
+  },
+  docente: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'Usuarios'
-   }
+  }
 
-  
 })
 
 const Tareas = mongoose.model('Tareas', tareasSchema)

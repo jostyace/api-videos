@@ -13,9 +13,9 @@ const PORT = 3000
 
 connectDB()
 app.use(express.static('public'))
-app.use(cors({ 
+app.use(cors({
   origin: FRONT_URL,
-  methods: ['GET', 'POST', 'PATCH'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
 app.use(express.json())
@@ -23,7 +23,7 @@ app.use('/api/usuarios', usuariosRoutes)
 app.use('/api/videos', videosRoutes)
 app.use('/api/niveles', nivelesRoutes)
 app.use('/api/tareas', tareasRoutes)
-app.use('/api/feedback', feedbackRoutes);
+app.use('/api/feedback', feedbackRoutes)
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Endpoint not found' })
 })
