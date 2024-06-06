@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config/config.js'
 
-
 export const logueadoMiddleware = (req, res, next) => {
   const authHeader = req.header('Authorization')
   if (!authHeader) {

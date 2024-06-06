@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const usuarioSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: true,
+    required: true
   },
   usuario: {
     type: String,
@@ -32,7 +32,7 @@ const usuarioSchema = new mongoose.Schema({
   nivel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Nivel',
-    required: false,
+    required: false
   }
 })
 

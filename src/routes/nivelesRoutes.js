@@ -3,13 +3,13 @@ import { crearNivel, editarNivel, eliminarNivel, listarNiveles, obtenerNivelPorI
 
 const router = express.Router()
 
-//Rutas protegidas, disponibles solo para Admin
+// Rutas protegidas, disponibles solo para Admin
 router.post('/crear', crearNivel)
-router.patch('/editar/:id',  editarNivel)
-router.delete('/eliminar/:id',  eliminarNivel)
-router.get('/:id',  obtenerNivelPorId)
+router.patch('/editar/:id', editarNivel)
+router.delete('/eliminar/:id', eliminarNivel)
+router.get('/:id', obtenerNivelPorId)
 
-//Ruta no protegida, dispobible para el formulario de Registro
-router.get('/',  listarNiveles)
+// Ruta no protegida, dispobible para el formulario de Registro
+router.get('/', listarNiveles)
 
 export default router
