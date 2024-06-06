@@ -94,10 +94,15 @@ export const iniciarSesion = async (req, res) => {
       return res.status(401).json({ message: 'Credenciales incorrectas' })
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' })
+    const tokenPayload = {
+      id: user._id,
+      rol: user.rol,
+      nivelId: user.rol === 'user' ? user.nivel : undefined
+    }
 
-    res.setHeader('Authorization', `Bearer ${token}`)
-    res.json({ message: 'Inicio de sesión exitoso', token })
+    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '1h' })
+
+    res.json({ token })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
